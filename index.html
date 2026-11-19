@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ideal Portfolio Guide</title>
+<style>
+  :root{
+    --bg:#0B0F1A;
+    --panel:#141A2B;
+    --panel-2:#1B2338;
+    --line:#26304A;
+    --ink:#F5F7FF;
+    --muted:#9AA6C4;
+    --lime:#C6F135;
+    --cyan:#4DD6FF;
+    --tang:#FF8A5C;
+    --coral:#FF5C7A;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(900px 420px at 85% -10%, rgba(198,241,53,.10), transparent 60%),
+      radial-gradient(700px 380px at -10% 20%, rgba(77,214,255,.10), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+    min-height:100vh;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:28px 20px 40px}
+
+  /* ---------- header ---------- */
+  header.top{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:26px}
+  .logo{
+    width:52px;height:52px;border-radius:14px;flex:none;
+    background:linear-gradient(135deg,var(--lime),#8FD41A);
+    color:#0B0F1A;display:grid;place-items:center;
+    font-weight:800;font-size:22px;letter-spacing:-1px;
+  }
+  h1{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.5px;line-height:1.1}
+  .tagline{color:var(--muted);font-size:14px;margin-top:2px}
+  .badge{
+    margin-left:auto;background:rgba(255,92,122,.14);color:#FF9DB2;
+    border:1px solid rgba(255,92,122,.35);border-radius:999px;
+    padding:6px 14px;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  }
+
+  /* ---------- sections ---------- */
+  section{margin-bottom:30px}
+  .eyebrow{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .eyebrow .num{
+    font-size:13px;font-weight:800;color:var(--bg);background:var(--lime);
+    border-radius:8px;padding:2px 8px;letter-spacing:.5px;
+  }
+  .eyebrow h2{font-size:clamp(19px,2.6vw,24px);font-weight:800;letter-spacing:-.3px}
+  .eyebrow .hint{color:var(--muted);font-size:13px;font-weight:500}
+
+  /* ---------- goal switch ---------- */
+  .switch{
+    display:flex;gap:8px;flex-wrap:wrap;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:8px;margin-bottom:14px;
+  }
+  .switch button{
+    flex:1;min-width:120px;cursor:pointer;border:0;border-radius:10px;
+    background:transparent;color:var(--muted);font:inherit;font-weight:700;
+    padding:11px 10px;transition:all .15s ease;
+  }
+  .switch button:hover{color:var(--ink);background:var(--panel-2)}
+  .switch button.active{background:var(--lime);color:#0B0F1A;box-shadow:0 4px 18px rgba(198,241,53,.25)}
+  .goal-note{color:var(--muted);font-size:14px;margin-bottom:16px;min-height:22px}
+  .goal-note strong{color:var(--lime)}
+
+  /* ---------- stacked bar ---------- */
+  .bar{
+    display:flex;height:56px;border-radius:14px;overflow:hidden;
+    border:1px solid var(--line);margin-bottom:18px;
+  }
+  .bar .seg{
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;color:#0B0F1A;
+    transition:flex-grow .35s ease;min-width:0;white-space:nowrap;
+  }
+  .bar .seg span{overflow:hidden;text-overflow:ellipsis;padding:0 8px}
+
+  /* ---------- mix cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;cursor:pointer;transition:transform .15s ease,border-color .15s ease;
+    text-align:left;font:inherit;color:inherit;width:100%;display:block;
+  }
+  .card:hover{transform:translateY(-3px);border-color:var(--accent,var(--lime))}
+  .card.open{border-color:var(--accent,var(--lime));background:var(--panel-2)}
+  .card .top{display:flex;align-items:center;gap:12px}
+  .card .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex:none}
+  .card .pct{
+    font-size:44px;font-weight:800;letter-spacing:-2px;color:var(--accent);
+    line-height:1;margin-left:auto;
+  }
+  .card h3{font-size:17px;font-weight:800;margin-top:12px}
+  .card .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .card .tap{
+    margin-top:12px;font-size:12px;font-weight:700;color:var(--accent);
+    letter-spacing:.4px;text-transform:uppercase;
+  }
+  .card .reason{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .card.open .reason{max-height:260px}
+  .card .reason p{
+    margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
+    color:var(--ink);font-size:14px;
+  }
+  .card .reason em{color:var(--accent);font-style:normal;font-weight:700}
+
+  /* ---------- expandable rows (Why + Watch) ---------- */
+  .rows{display:grid;gap:10px}
+  .row{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;transition:border-color .15s ease;
+  }
+  .row > button{
+    width:100%;display:flex;align-items:center;gap:14px;cursor:pointer;
+    background:transparent;border:0;color:inherit;font:inherit;text-align:left;
+    padding:16px 18px;
+  }
+  .row > button:hover{background:var(--panel-2)}
+  .row .chev{
+    margin-left:auto;flex:none;font-size:14px;color:var(--muted);
+    transition:transform .25s ease;
+  }
+  .row.open .chev{transform:rotate(180deg)}
+  .row .ic{
+    width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;
+    font-size:20px;background:rgba(255,138,92,.12);
+  }
+  .row h3{font-size:16px;font-weight:800}
+  .row .sub{color:var(--muted);font-size:13px}
+  .row .body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .row.open .body{max-height:320px}
+  .row .body p{padding:0 18px 16px 72px;color:var(--ink);font-size:14px}
+  .row .body .ex{
+    margin-top:8px;padding:10px 12px;border-radius:10px;
+    background:rgba(255,138,92,.08);border:1px dashed rgba(255,138,92,.35);
+    color:var(--tang);font-size:13px;display:block;
+  }
+
+  /* watch list tint */
+  #watch .row .ic{background:rgba(255,92,122,.12)}
+  #watch .row.open{border-color:rgba(255,92,122,.5)}
+  #watch .row .body .ex{
+    background:rgba(255,92,122,.07);border-color:rgba(255,92,122,.3);color:#FF9DB2;
+  }
+
+  footer{
+    margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12.5px;text-align:center;
+  }
+  @media (max-width:560px){
+    .card .pct{font-size:36px}
+    .row .body p{padding-left:18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="logo">IP</div>
+    <div>
+      <h1>Ideal Portfolio Guide</h1>
+      <p class="tagline">A simple, calm starting point for a Malaysian beginner investor.</p>
+    </div>
+    <span class="badge">Sample data only</span>
+  </header>
+
+  <!-- ============ SECTION 1: PORTFOLIO MIX ============ -->
+  <section id="mix">
+    <div class="eyebrow">
+      <span class="num">01</span>
+      <h2>Portfolio Mix</h2>
+      <span class="hint">— pick a goal, see the example balance</span>
+    </div>
+
+    <div class="switch" id="goalSwitch" role="group" aria-label="Investment goal"></div>
+    <p class="goal-note" id="goalNote"></p>
+
+    <div class="bar" id="mixBar" role="img" aria-label="Portfolio mix bar"></div>
+    <div class="cards" id="mixCards"></div>
+  </section>
+
+  <!-- ============ SECTION 2: WHY THIS MIX ============ -->
+  <section id="why">
+    <div class="eyebrow">
+      <span class="num">02</span>
+      <h2>Why This Mix</h2>
+      <span class="hint">— tap a part to read the plain-words reason</span>
+    </div>
+    <div class="rows" id="whyRows"></div>
+  </section>
+
+  <!-- ============ SECTION 3: WATCH LIST ============ -->
+  <section id="watch">
+    <div class="eyebrow">
+      <span class="num">03</span>
+      <h2>Watch List</h2>
+      <span class="hint">— tap a warning sign to see what it means</span>
+    </div>
+    <div class="rows" id="watchRows"></div>
+  </section>
+
+  <footer>
+    Everything here is a made-up teaching example for Malaysian beginners — the percentages,
+    names and notes are illustrative, not live prices, ratings or advice.
+    Nothing is saved between visits.
+  </footer>
+</div>
+
+<script>
+/* ---------------- made-up sample data ---------------- */
+
+const CATEGORIES = {
+  cash: {
+    color: "#4DD6FF",
+    name: "Cash Park",
+    sub: "Money market fund & fixed deposit",
+    reason: "This money barely moves up or down, so it keeps you calm while you learn. " +
+      "It is also your emergency cushion — many Malaysians keep 3–6 months of expenses " +
+      "in money market funds or fixed deposits before investing more aggressively.",
+    whyTitle: "Your stability layer",
+    whyBody: "Cash does not grow much, but it also does not crash. It protects you when " +
+      "markets fall and stops you from panic-selling your growth investments at the worst " +
+      "time. It also means an emergency never forces you to sell investments."
+  },
+  local: {
+    color: "#C6F135",
+    name: "Home Market",
+    sub: "Malaysia equity index fund (KLCI-linked)",
+    reason: "One fund tracking Malaysia's biggest listed companies — banks, telecoms, " +
+      "utilities. Instead of betting on a single stock, you own a small slice of many " +
+      "at once, which is the simplest way for a beginner to start.",
+    whyTitle: "Your home-ground growth",
+    whyBody: "An index fund spreads your money across dozens of Malaysia's largest " +
+      "companies, so one bad company cannot sink you. It is cheap and automatic, and you " +
+      "already understand many of these businesses because you use them every day."
+  },
+  global: {
+    color: "#FF8A5C",
+    name: "Wider World",
+    sub: "Regional or global index fund",
+    reason: "Money outside Malaysia, so your savings are not tied to one country's luck. " +
+      "A simple regional or global index fund gives you exposure to economies that move " +
+      "differently from ours.",
+    whyTitle: "Your passport money",
+    whyBody: "If everything you own is in Malaysia, a local slowdown hurts all of it at " +
+      "once. A slice outside the country — even a small one — smooths the ride, though " +
+      "these funds can swing more in the short term."
+  }
+};
+
+const GOALS = {
+  beginner: {
+    label: "Beginner",
+    note: "Calm start — <strong>half</strong> your money sits in safe places while you learn the ropes.",
+    parts: [["cash", 50], ["local", 30], ["global", 20]]
+  },
+  balanced: {
+    label: "Balanced",
+    note: "Middle path — <strong>most</strong> money works in markets, but a real cash cushion stays.",
+    parts: [["cash", 25], ["local", 45], ["global", 30]]
+  },
+  growth: {
+    label: "Growth",
+    note: "Long horizon — <strong>nearly all</strong> money stays invested, accepting bigger swings.",
+    parts: [["cash", 10], ["local", 55], ["global", 35]]
+  }
+};
+
+const WATCH_SIGNS = [
+  {
+    icon: "📉",
+    title: "Profits are shrinking",
+    sub: "Earnings down quarter after quarter",
+    body: "When a company's profit keeps falling for two or three quarters in a row, the " +
+      "story you bought into may be breaking. One weak quarter can be bad luck; a streak " +
+      "is a pattern.",
+    example: "Made-up example: a consumer stock on Bursa Malaysia reports smaller profit " +
+      "every quarter for six months while its competitors stay steady — time to review."
+  },
+  {
+    icon: "📰",
+    title: "Ugly headlines",
+    sub: "Fraud claims, auditor exits, regulator queries",
+    body: "Serious red flags include the company's auditor resigning suddenly, a " +
+      "Securities Commission Malaysia investigation, or repeated Bursa Malaysia query " +
+      "letters about unusual share price moves or missing reports.",
+    example: "Made-up example: a firm delays its annual report twice and its auditor quits " +
+      "with no clear reason — review this holding carefully before deciding anything."
+  },
+  {
+    icon: "🪂",
+    title: "Falling harder than the market",
+    sub: "Dropping far more than the FBM KLCI",
+    body: "Compare the holding with the broad market index over the same period. If the " +
+      "index slips 5% but your stock falls 30%, the fall is about the company, not the " +
+      "market.",
+    example: "Made-up example: a plantation-linked stock drops 28% in six months while " +
+      "the FBM KLCI slips only 4% — that gap is a warning, not noise."
+  },
+  {
+    icon: "✂️",
+    title: "The dividend disappeared",
+    sub: "Payout cut, skipped or suspended",
+    body: "Many Malaysians hold bank stocks and REITs for their payouts. If a company " +
+      "that always paid suddenly cuts or suspends its dividend, cash flow is under " +
+      "pressure — find out why before assuming it will return.",
+    example: "Made-up example: a REIT that paid every quarter skips two payouts in a row " +
+      "and gives only vague reasons — review it."
+  },
+  {
+    icon: "🤷",
+    title: "You can't explain it anymore",
+    sub: "The one-sentence test fails",
+    body: "If you cannot explain in one simple sentence how the holding makes money, you " +
+      "cannot judge whether it is still healthy. Confusion is itself a signal to review — " +
+      "or to switch to something simpler like an index fund.",
+    example: "Made-up example: you bought a structured product a friend recommended, but " +
+      "you no longer know what it tracks or what it costs — review it."
+  }
+];
+
+/* ---------------- rendering ---------------- */
+
+function el(tag, cls, html) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html !== undefined) n.innerHTML = html;
+  return n;
+}
+
+let currentGoal = "beginner";
+
+function renderGoalSwitch() {
+  const wrap = document.getElementById("goalSwitch");
+  wrap.innerHTML = "";
+  Object.entries(GOALS).forEach(([key, g]) => {
+    const b = el("button", key === currentGoal ? "active" : "", g.label);
+    b.onclick = () => { currentGoal = key; renderMix(); };
+    wrap.appendChild(b);
+  });
+}
+
+function renderMix() {
+  renderGoalSwitch();
+  const goal = GOALS[currentGoal];
+  document.getElementById("goalNote").innerHTML = goal.note;
+
+  const bar = document.getElementById("mixBar");
+  bar.innerHTML = "";
+  goal.parts.forEach(([key, pct]) => {
+    const c = CATEGORIES[key];
+    const seg = el("div", "seg");
+    seg.style.background = c.color;
+    seg.style.flexGrow = pct;
+    seg.appendChild(el("span", "", pct + "%"));
+    bar.appendChild(seg);
+  });
+
+  const cards = document.getElementById("mixCards");
+  cards.innerHTML = "";
+  goal.parts.forEach(([key, pct]) => {
+    const c = CATEGORIES[key];
+    const card = el("button", "card");
+    card.style.setProperty("--accent", c.color);
+    card.setAttribute("aria-expanded", "false");
+    card.innerHTML =
+      '<div class="top"><span class="dot"></span><span class="pct">' + pct + '%</span></div>' +
+      '<h3>' + c.name + '</h3>' +
+      '<p class="sub">' + c.sub + '</p>' +
+      '<span class="tap">Tap for reason ▾</span>' +
+      '<div class="reason"><p><em>Why ' + pct + '%?</em> ' + c.reason + '</p></div>';
+    card.onclick = () => {
+      const open = card.classList.toggle("open");
+      card.setAttribute("aria-expanded", open);
+    };
+    cards.appendChild(card);
+  });
+}
+
+function renderWhy() {
+  const wrap = document.getElementById("whyRows");
+  wrap.innerHTML = "";
+  Object.values(CATEGORIES).forEach(c => {
+    const row = el("div", "row");
+    const btn = el("button");
+    btn.innerHTML =
+      '<span class="ic" style="background:' + c.color + '22">' +
+        '<span style="color:' + c.color + '">●</span></span>' +
+      '<span><h3>' + c.whyTitle + '</h3>' +
+      '<span class="sub">' + c.name + ' — ' + c.sub + '</span></span>' +
+      '<span class="chev">▾</span>';
+    btn.onclick = () => row.classList.toggle("open");
+    const body = el("div", "body");
+    body.appendChild(el("p", "", c.whyBody));
+    row.appendChild(btn);
+    row.appendChild(body);
+    wrap.appendChild(row);
+  });
+}
+
+function renderWatch() {
+  const wrap = document.getElementById("watchRows");
+  wrap.innerHTML = "";
+  WATCH_SIGNS.forEach(w => {
+    const row = el("div", "row");
+    const btn = el("button");
+    btn.innerHTML =
+      '<span class="ic">' + w.icon + '</span>' +
+      '<span><h3>' + w.title + '</h3><span class="sub">' + w.sub + '</span></span>' +
+      '<span class="chev">▾</span>';
+    btn.onclick = () => row.classList.toggle("open");
+    const body = el("div", "body");
+    const p = el("p", "", w.body);
+    p.appendChild(el("span", "ex", w.example));
+    body.appendChild(p);
+    row.appendChild(btn);
+    row.appendChild(body);
+    wrap.appendChild(row);
+  });
+}
+
+/* initial render — the page never opens empty */
+renderMix();
+renderWhy();
+renderWatch();
+</script>
+</body>
+</html>
